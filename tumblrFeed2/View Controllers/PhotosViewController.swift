@@ -13,6 +13,7 @@ import AlamofireImage
 class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
     @IBOutlet weak var tableView: UITableView!
+    var image: UIImage!
     
     var posts: [[String: Any]] = []
     
@@ -83,46 +84,32 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
             let url = URL(string: urlString)
 
             cell.photoImageView.af_setImage(withURL: url!)
+            self.image = cell.photoImageView.image
         }
         
         return cell
     }
     
-//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell") as! PhotoCell
-//
-//        // Configure YourCustomCell using the outlets that you've defined.
-//
-//        let post = posts[indexPath.row]
-//
-//        if let photos = post["photos"] as? [[String: Any]] {
-//            // photos is NOT nil, we can use it!
-//
-//            /* Get the photo url */
-//            // 1.
-//            let photo = photos[0]
-//            // 2.
-//            let originalSize = photo["original_size"] as! [String: Any]
-//            // 3.
-//            let urlString = originalSize["url"] as! String
-//            // 4.
-//            let url = URL(string: urlString)
-//
-//            cell.photoImageView.af_setImage(withURL: url!)
-//        }
-//
-//        return cell
-//    }
 
     /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    */
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        let vc = segue.destination as! PhotoDetailsViewController
+        let cell = sender as! PhotoCell        
+        vc.image = cell.photoImageView.image
+        
     }
-    */
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+ 
 
 }
